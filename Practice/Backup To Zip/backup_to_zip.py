@@ -10,13 +10,15 @@ def backup_to_zip(folder):
   
   #Check to see if any previous backups
   number = 1
+  os.chdir(os.path.abspath(folder))
   while True:
-    zipfile_name = os.path.basename(folder) + '_' + str(number) + '.zip.'
+    zipfile_name = os.path.basename(folder) + '_' + 'backup' + str(number) + '.zip.'
     if not os.path.exists(zipfile_name):
       break;
     number += 1;
     
   print('Creating %s...' % (zipfile_name))
+  
   backup_zip = zipfile.ZipFile(zipfile_name,'w')
   
   for foldername, subfolders, filenames in os.walk(folder):
@@ -32,4 +34,4 @@ def backup_to_zip(folder):
   
   backup_zip.close()
   print('Done')
-backup_to_zip('') #call function with intended folder
+backup_to_zip('C:\\Users\\jswizz\\Documents\\Cawledge\\Sophomore') #call function with intended folder
