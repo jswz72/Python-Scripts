@@ -9,6 +9,7 @@ try:
 except Exception as e:
 	print('Problem reaching site: %s' %(e))
 
+
 weather_page = bs4.BeautifulSoup(res.text,"html.parser")
 
 day_list = []
@@ -24,7 +25,10 @@ for block in weather_page.find_all("td", {"class" : "temp"}):
 		for span in div.find_all("span"):
 			if span not in div.find_all("span", {"class" : "slash"}): 
 				temp = list(span.getText())
-				print(temp[0:1])
+				first_num = str(temp[0])
+				second_num = str(temp[1])
+				first_num = first_num[1]
+				second_num = second_num[1]
 
 #for i in temp_list:
 #	print(i)
@@ -45,5 +49,5 @@ for i in range(15):
 	'precip' : precip_list[i]
 	}
 	weather_obj_list.append(d)
-for i in weather_obj_list:
-	print(i)
+#for i in weather_obj_list:
+#	print(i)
