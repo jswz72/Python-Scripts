@@ -7,7 +7,7 @@ import requests, bs4, shelve, datetime, os
 def diff_exist(obj_1, obj_2):
 	diff = 0
 
-	if obj_1['day'] != obj2['day']:
+	if obj_1['day'] != obj_2['day']:
 		return diff
 	if obj_1['high'] != obj_2['high']:
 		diff += 1
@@ -105,19 +105,24 @@ if os.path.exists('Weather_Data'):
 				if shelve_obj['day'] == current_obj['day']:
 					differences += diff_exist(shelve_obj, current_obj)
 
-	#store current weather_obj_list in shelf file with yyyy-dd name
-	weather_data_shelf[date] = weather_obj_list
-
-	#store differences calculated via diff_exist
-	weather_data_shelf['differences'] += differences
-	print("Found %s differences so far." %(differences))
+	#store current weather_obj_list with yyyy-dd name
+	weather_data_shelf[date] = weather_obj_list	
 	weather_data_shelf.close()
+
+	#store differences calculated via diff_exist	
+	print("Found %s differences so far." %(differences))
+	weather_diff_shelf = shelve.open('Weather_Differences')
+	weather_diff_shelf['differences'] += differences
+	weather_diff_shelf.close()
 else:
-	#create shelve file if not found
-	print("No Previous Weather Data Found...\n Writing New Weather Data File")
+	#create weather and diff shelve files if not found
+	print("No Previous Weather Data Found...\n Writing New Weather Data Files")
+
 	weather_data_shelf = shelve.open('Weather_Data')
 	weather_data_shelf[date] = weather_obj_list
-	weather_data_shelf['differences'] = 0
 	weather_data_shelf.close()
 
+	weather_diff_shelf = shelve.open('Weather_Differences')
+	weather_diff_shelf['differences'] = differences
+	weather_diff_shelf.close()
 
