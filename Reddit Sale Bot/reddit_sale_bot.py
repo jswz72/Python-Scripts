@@ -25,7 +25,7 @@ import praw, time, random, re, shelve
 #price_limit = raw_input()
 
 user_agent = ""
-r = praw.Reddit(user_agent = user_agent, client_id = "", client_secret = "OQynvMsuD-", username = "", password = "")
+r = praw.Reddit(user_agent = user_agent, client_id = "", client_secret = "", username = "", password = "")
 
 print('\nLogging in...')
 #r.login()   #put in username and password in ext file
