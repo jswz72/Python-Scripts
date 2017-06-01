@@ -39,6 +39,10 @@ if os.path.exists('Previous_Deals'):
 else:
 	cache = []
 
+smtpObj = smtplib.SMTP('smtp.gmail.com',587)
+smtpObj.starttls()
+smtpObj.login( bot_email, bot_email_password)
+
 for submission in subreddit.new(limit = "10"):
 	if keyword in submission.title:
 		#regex to find all dollar amounts < $100
@@ -49,7 +53,7 @@ for submission in subreddit.new(limit = "10"):
 		upper_limits = upper_limit_regex.search(submission.title)
 		if str(type(double_digits)) != "<type 'NoneType'>" or str(type(upper_limits)) != "<type 'NoneType'>":
 			if submission.title not in cache:
-				#email deal
+				smtpObj.sendmail(bot_email, recipient_email, 'Subject: ' + subreddit + ' deal\n' + submission.title)
 				print(submission.title)
 				cache.append(submission.title)
-
+smtpObj.quit()
