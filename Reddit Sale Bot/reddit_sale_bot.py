@@ -3,36 +3,39 @@
 
 import praw, time, re, shelve, os, smtplib
 
-#print("Enter reddit username")
-#username = raw_input()
+print("Enter reddit bot username")
+bot_name = raw_input()
 
-#print("Enter reddit password")
-#password = raw_input()
+print("Enter reddit bot password")
+bot_password = raw_input()
 
-#print("Enter client_id")
-#client_id = raw_input()
+print("Enter client_id")
+bot_id = raw_input()
 
-#print("Enter secret")
-#secret = raw_input()
+print("Enter secret")
+bot_secret = raw_input()
 
-#print("Enter desired subreddit")
-#subreddit = raw_input()
+print("Enter intended subreddit")
+deal_subreddit = raw_input()
 
-#print("Enter keyword to search for")
-#keyword = raw_input()
+print("Enter keyword to search for")
+keyword = raw_input()
 
-#print("Enter price upper-limit")
-#price_limit = raw_input()
+print("Enter price upper-limit")
+price_limit = raw_input()
 
-user_agent = "web:com.example.myredditapp:v1.2.3 (by /u/" + "buildapcsalesb0t" + ")"
-r = praw.Reddit(user_agent = user_agent, client_id = "", client_secret = "", username = "", password = "")
+print("Enter rate to fetch posts (1-100)")
+rate_limit = raw_input()
+
+bot_agent = "web:com.example.myredditapp:v1.2.3 (by /u/" + bot_name + ")"
+r = praw.Reddit(user_agent = bot_agent, client_id = bot_id, client_secret = bot_secret, username = bot_name, password = bot_password)
 
 print('\nLogging in...')
-#r.login()   #put in username and password in ext file
 
-subreddit = r.subreddit("")
+subreddit = r.subreddit(deal_subreddit)
 print('\nLoading subreddit...\n')
 
+#Check to see if Previous Deals shelffile exists
 if os.path.exists('Previous_Deals'):
 	previous_deals_shelf = shelve.open('Previous_Deals')	
 	cache = previous_deals_shelf['cache']
@@ -40,17 +43,22 @@ else:
 	previous_deals_shelf = shelve.open('Previous_Deals')	
 	cache = []
 
-bot_email = ''
-bot_email_password = ''
-recipient_email = ''
+print('Enter bot (sender) email')
+bot_email = raw_input()
 
-smtpObj = smtplib.SMTP('',587)
+print('Enter bot (sender) email password')
+bot_email_password = raw_input()
+
+print('Enter recipient email')
+recipient_email = raw_input()
+
+smtpObj = smtplib.SMTP('smtp.gmail.com',587)
 smtpObj.starttls()
 smtpObj.login(bot_email, bot_email_password)
 email_count = 0
 
 for submission in subreddit.new(limit = 10):
-        if "[]" in submission.title:
+        if keyword in submission.title:
                 #regex to find all dollar amounts < $100
                 double_digit_regex = re.compile(r'(\$( )?\d(\d)?\.(\d)?(\d)?)')
                 double_digits = double_digit_regex.search(submission.title)
