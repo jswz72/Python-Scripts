@@ -1,4 +1,3 @@
 Scramble Bot
 
-scramble_bot.py uses PRAW to grab 1 comment every 10 seconds from a reddit subreddit (/r/pics for demonstration purposes) and posts a scrambled reply to the comment.  
-Mostly for learning/test purposes as this bot has no real purpose.
+Example usage of the [Python-Reddit API Wrapper](https://praw.readthedocs.io/en/latest/)
